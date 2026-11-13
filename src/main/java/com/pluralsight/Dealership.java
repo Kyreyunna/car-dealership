@@ -10,7 +10,9 @@ public class Dealership {
     private String phone;
     private ArrayList<Vehicle> inventory;
 
-
+    public Dealership() {
+        this.inventory=new ArrayList<Vehicle>();
+    }
 
     public List<Vehicle> getVehiclesByPrice(BigDecimal min, BigDecimal max){
         return null;
@@ -73,6 +75,9 @@ public class Dealership {
         this.address = address;
         this.phone = phone;
         this.inventory=new ArrayList<Vehicle>();
+    }
 
+    public List<Vehicle> getAllVehicles() {
+        return inventory;
     }
 }
