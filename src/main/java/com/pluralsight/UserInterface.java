@@ -3,17 +3,19 @@ package com.pluralsight;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
+    Scanner scanner = new Scanner(System.in);
     private Dealership dealership;
 
-    private void displayVehicles(List<Vehicle>vehicleList){
+    private void displayVehicles(List<Vehicle> vehicleList) {
         //I think I will need to read all lines on file to display all vehicles to the console
         //or just print vehicle list
         //print vehicleList
-        if(vehicleList.isEmpty()){
+        if (vehicleList.isEmpty()) {
             System.out.println("List is empty");
             return;//return means stop sometimes
         }
@@ -24,11 +26,11 @@ public class UserInterface {
     }
 
     private void init() {
-    // loads the dealership with the file manager
+        // loads the dealership with the file manager
 
-        DealershipFileManager dealershipFileManager= new DealershipFileManager();
+        DealershipFileManager dealershipFileManager = new DealershipFileManager();
 //        dealershipFileManager.getDealership();
-        this.dealership= dealershipFileManager.getDealership();
+        this.dealership = dealershipFileManager.getDealership();
     }
 
     public UserInterface() {
@@ -36,7 +38,7 @@ public class UserInterface {
     }
 
     public void display() {
-        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner(System.in);
 
 
         init();
@@ -65,7 +67,8 @@ public class UserInterface {
                 case 5 -> processGetByMileageRequest();
                 case 6 -> processGetByVehicleTypeRequest();
                 case 7 -> processGetAllVehiclesRequest();
-                case 8 -> processRemoveVehicleRequest();
+                case 8 -> processAddVehicleRequest();
+                case 9 -> processRemoveVehicleRequest();
                 case 0 -> {
                     System.out.println("goodbye");
                     System.exit(0);
@@ -75,31 +78,79 @@ public class UserInterface {
     }
 
     public void processGetByPriceRequest() {
+//  search for a vehicle in file on price. if price in file matches user input print entire vehicle line.
+        //no bc file is read in init and turns lines into objects inside dealership object
+//        processGetByPriceRequest() doesn't check prices or print lines itself:
+//        In OOP, each method has a clear job
+//        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter price min");
+        BigDecimal min = scanner.nextBigDecimal();
 
+        System.out.println("Enter price max");
+        BigDecimal max = scanner.nextBigDecimal();
+        scanner.nextLine();
+        List<Vehicle> vehicles = dealership.getVehiclesByPrice(min, max);
+        displayVehicles(vehicles);
+
+//        displayVehicles() helper method
     }
 
     public void processGetByMakeModelRequest() {
+        System.out.println("Enter make");
+        String make = scanner.nextLine();
 
+        System.out.println("Enter model");
+        String model = scanner.nextLine();
+
+        List<Vehicle> vehicles = dealership.getVehiclesMakeModel(make, model);
+        displayVehicles(vehicles);
     }
 
     public void processGetByYearRequest() {
+        System.out.println("Enter min");
+        int min = scanner.nextInt();
 
+        System.out.println("Enter max");
+        int max = scanner.nextInt();
+        scanner.nextLine();
+        List<Vehicle> vehicles = dealership.getVehiclesByYear(min, max);
+        displayVehicles(vehicles);
     }
+
 
     public void processGetByColorRequest() {
+        System.out.println("Enter color");
+        String color = scanner.nextLine().trim();
 
+        List<Vehicle> vehicles = dealership.getVehiclesByColor(color);
+        displayVehicles(vehicles);
     }
 
+
     public void processGetByMileageRequest() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter min mileage");
+        int min = scanner.nextInt();
+
+        System.out.println("Enter max mileage");
+        int max = scanner.nextInt();
+        scanner.nextLine();
+        List<Vehicle> vehicles = dealership.getVehiclesByMileage(min, max);
+        displayVehicles(vehicles);
 
     }
 
     public void processGetByVehicleTypeRequest() {
+        System.out.println("Enter type");
+        String type = scanner.nextLine().trim();
+
+        List<Vehicle> vehicles = dealership.getVehiclesByType(type);
+        displayVehicles(vehicles);
 
     }
 
     public void processGetAllVehiclesRequest() {
-        List<Vehicle>allVehicles = dealership.getAllVehicles();
+        List<Vehicle> allVehicles = dealership.getAllVehicles();
         displayVehicles(allVehicles);
         //hand allVehicles to displayVehicles
     }
@@ -111,7 +162,8 @@ public class UserInterface {
     public void processAddVehicleRequest() {
 
     }
-    public void appendtoCSV(String record){
+
+    public void appendtoCSV(String record) {
         try {
 
 
