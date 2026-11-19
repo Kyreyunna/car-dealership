@@ -59,6 +59,7 @@ public class UserInterface {
             int option = scanner.nextInt();
             scanner.nextLine();
 
+
             switch (option) {
                 case 1 -> processGetByPriceRequest();
                 case 2 -> processGetByMakeModelRequest();
