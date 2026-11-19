@@ -3,7 +3,6 @@ package com.pluralsight;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,7 +48,7 @@ public class UserInterface {
             System.out.println("\t3 - Find vehicles by year");
             System.out.println("\t4 - Find vehicles by color");
             System.out.println("\t5 - Find vehicles by mileage range");
-            System.out.println("\t6 - Find vehicles by type\n");
+            System.out.println("\t6 - Find vehicles by type");
             System.out.println("\t7 - View all vehicles");
             System.out.println("\t8 - Add a vehicle");
             System.out.println("\t9 - Remove a vehicle");
