@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +28,6 @@ public class UserInterface {
 
     private void init() {
         // loads the dealership with the file manager
-
         DealershipFileManager dealershipFileManager = new DealershipFileManager();
 //        dealershipFileManager.getDealership();
         this.dealership = dealershipFileManager.getDealership();
@@ -58,7 +58,6 @@ public class UserInterface {
 
             int option = scanner.nextInt();
             scanner.nextLine();
-
 
             switch (option) {
                 case 1 -> processGetByPriceRequest();
@@ -157,11 +156,62 @@ public class UserInterface {
     }
 
     public void processRemoveVehicleRequest() {
+        System.out.println("Enter vin");
+        int vin = scanner.nextInt();
+        //if vehicle or line in file matches the vin it gets removed
+        Vehicle vehicleToRemove = null; // Holds the matching Vehicle once found, or stays null if not found
+        for (Vehicle vehicle : dealership.getAllVehicles()) { // Loops through all vehicles currently in the dealership
+            if (vehicle.getVin() == vin) { // Checks if this vehicle's VIN matches the entered VIN
+                vehicleToRemove = vehicle; // Saves a reference to the matching vehicle
+                break; // Stops searching once a match is found
+            }
+        }
 
+        if (vehicleToRemove != null) { // Ensures a matching vehicle was found before removing and saving
+            dealership.removeVehicle(vehicleToRemove); // Removes the vehicle from the dealership's in-memory inventory
+            System.out.println("Vehicle removed successfully."); // Confirms the removal to the user
+
+            DealershipFileManager fileManager = new DealershipFileManager(); // Creates a file manager to persist the change
+            fileManager.saveDealership(dealership); // Rewrites inventory.csv without the removed vehicle
+        } else { // Runs when no vehicle in inventory matches the entered VIN
+            System.out.println("No vehicle found with VIN " + vin); // Informs the user that nothing was removed
+        }
     }
 
     public void processAddVehicleRequest() {
+    //i want to add a vehicle to inventory through the dealership
+    //I can prompt user then somehow show the added vehicle by calling the method that formats the vehicle with pipes
 
+        System.out.println("Enter vin");
+        int vin = scanner.nextInt();
+        System.out.println("Enter year");
+        int year = scanner.nextInt();
+        System.out.println("Enter odometer");
+        int odometer = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Enter make");
+        String make = scanner.nextLine();
+        System.out.println("Enter model");
+        String model = scanner.nextLine();
+        System.out.println("Enter color");
+        String color = scanner.nextLine();
+        System.out.println("Enter type");
+        String type = scanner.nextLine();
+        System.out.println("Enter price");
+        BigDecimal price = scanner.nextBigDecimal();
+        //im missing something to initialize vehicle but i think i also need to somehow
+//   add details of how many characters to type for each section?
+        Vehicle vehicle = new Vehicle(vin,year,odometer,make,model,color,type,price);
+        dealership.addVehicle(vehicle);
+
+        List<Vehicle>newVehicle= new ArrayList<>();
+        newVehicle.add(vehicle); // Puts the newly created vehicle into that list
+
+//        displayVehicles(List<Vehicle> vehicle);
+        displayVehicles(newVehicle);// Passes the list to displayVehicles so it formats and prints the vehicle
+//        this.dealership.addVehicle(vehicle);
+        DealershipFileManager fileManager = new DealershipFileManager(); // Creates a DealershipFileManager instance to handle file writing
+        fileManager.saveDealership(dealership); // Writes the updated dealership and inventory back out to inventory.csv
     }
 
     public void appendtoCSV(String record) {

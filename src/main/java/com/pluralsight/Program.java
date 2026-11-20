@@ -8,7 +8,8 @@ public class Program {
 //        UserInterface
         UserInterface userInterface= new UserInterface();
         userInterface.display();
-
-
+//  Run Program.main right now and test menu options 1–7 to
+//  check off your search items (and fix %n in
+//  Vehicle.toString() if lines print squished together).
     }
 }
